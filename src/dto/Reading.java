@@ -7,12 +7,13 @@ public class Reading extends Product {
     private String author;
     private String publisher;
 
-    public Reading(){}
+    public Reading() {
+    }
 
 
-
-    public Reading(String name, double price, int productNumber, String author, String publisher) {
+    public Reading(String name, double price, int productNumber,String readingName, String author, String publisher) {
         super(name, price, productNumber);
+        this.readingName = readingName;
         this.author = author;
         this.publisher = publisher;
     }
@@ -32,6 +33,7 @@ public class Reading extends Product {
     public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
+
     public String getReadingName() {
         return readingName;
     }
@@ -39,6 +41,7 @@ public class Reading extends Product {
     public void setReadingName(String readingName) {
         this.readingName = readingName;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,7 +60,7 @@ public class Reading extends Product {
 
     @Override
     public String toString() {
-        return   super.toString()+
+        return super.toString() +
                 "Reading{" +
                 "author='" + author + '\'' +
                 ", publisher='" + publisher + '\'' +
