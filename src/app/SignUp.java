@@ -38,6 +38,10 @@ public class SignUp {
         String email = in.nextLine();
         user.setEmail(email);
 
+        System.out.print("phone number: ");
+        String phone = in.nextLine();
+        user.setPhoneNumber(phone);
+
         System.out.print("state: ");
         String state = in.nextLine();
         address.setState(state);
@@ -50,7 +54,7 @@ public class SignUp {
         String street = in.nextLine();
         address.setStreet(street);
 
-        System.out.println("postal code: ");
+        System.out.print("postal code: ");
         String pc = in.nextLine();
         address.setPostalCode(pc);
 

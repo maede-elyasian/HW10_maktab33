@@ -18,7 +18,7 @@ public class ElectronicDeviceDao extends ProductDao {
     }
 
     public ElectronicDevice getElcDevById(int id) throws SQLException {
-        String select = "select p.product_name,e.brand ,e.model,p.price, e.productionYear,p.productNumber from online_store.electronic_devices e JOIN online_store.products p on e.product_id=p.product_id where e.product_id =?";
+        String select = "select p.product_id,p.product_name,e.brand ,e.model,p.price, e.productionYear,p.productNumber from online_store.electronic_devices e JOIN online_store.products p on e.product_id=p.product_id where e.product_id =?";
         PreparedStatement ps = con.prepareStatement(select);
         ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
@@ -72,7 +72,7 @@ public class ElectronicDeviceDao extends ProductDao {
 
     public ElectronicDevice allDevices(ResultSet rs) throws SQLException {
         ElectronicDevice electronicDevice = new ElectronicDevice();
-        electronicDevice.setName(rs.getString("name"));
+        electronicDevice.setName(rs.getString("product_name"));
         electronicDevice.setModel(rs.getString("model"));
         electronicDevice.setBrand(rs.getString("brand"));
         electronicDevice.setPrice(rs.getDouble("price"));
@@ -83,7 +83,7 @@ public class ElectronicDeviceDao extends ProductDao {
 
     public HashSet<ElectronicDevice> electronicDeviceHashSet() throws SQLException {
         HashSet<ElectronicDevice> devices = new HashSet();
-        String sql = "select p.product_name,e.brand ,e.model,p.price, e.productionYear,p.productNumber from online_store.electronic_devices e JOIN online_store.products p on e.product_id=p.product_id ";
+        String sql = "select p.product_id,p.product_name,e.brand ,e.model,p.price, e.productionYear,p.productNumber from online_store.electronic_devices e JOIN online_store.products p on e.product_id=p.product_id ";
         PreparedStatement ps = con.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         while (rs.next()){

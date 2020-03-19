@@ -66,7 +66,7 @@ public class ShoeDao extends ProductDao {
 
     public Shoe allShoes(ResultSet rs) throws SQLException {
         Shoe shoe = new Shoe();
-        shoe.setName(rs.getString("name"));
+        shoe.setName(rs.getString("product_name"));
         shoe.setBrand(rs.getString("brand"));
         shoe.setSize(rs.getString("size"));
         shoe.setColor(rs.getString("color"));
@@ -76,7 +76,7 @@ public class ShoeDao extends ProductDao {
 
     public HashSet<Shoe> shoeHashSet() throws SQLException {
         HashSet<Shoe> shoes = new HashSet<>();
-        String sql ="SELECT p.product_name,sh.brand,sh.size,sh.color,p.price,p.productNumber\n" +
+        String sql ="SELECT p.product_id,p.product_name,sh.brand,sh.size,sh.color,p.price,p.productNumber\n" +
                 "FROM online_store.shoes sh\n" +
                 "join online_store.products p\n" +
                 "on p.product_id = sh.product_id";

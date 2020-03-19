@@ -1,17 +1,21 @@
 package dao;
 
+import connection.MyConnection;
+
 import java.sql.*;
 
 public class getIdByTable {
     private Connection con;
 
-    private ResultSet resultset;
 
+    public getIdByTable() {
+        con = MyConnection.getConnection();
+    }
 
     public int getId(String tableName) throws SQLException {
-        String getId = "select max(id) as id from " + tableName;
+        String getId = "SELECT max(id) as id from " + tableName ;
         PreparedStatement ps = con.prepareStatement(getId);
-        resultset = ps.executeQuery();
+        ResultSet resultset = ps.executeQuery();
         if (resultset.next()) {
             return resultset.getInt("id");
         }

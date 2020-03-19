@@ -1,6 +1,7 @@
 package dao;
 
 import connection.MyConnection;
+import dto.Product;
 import dto.Reading;
 
 import java.sql.Connection;
@@ -66,10 +67,31 @@ public class ReadingDao extends ProductDao {
         return getReadingById(id);
     }
 
+    public HashSet<Reading> readingHashSet() throws SQLException {
+        HashSet<Reading> readings = new HashSet<>();
 
+        String select="SELECT p.product_id,p.product_name,r.reading_name,r.author,r.publisher,p.price,p.productNumber FROM products p JOIN readings r ON p.product_id = r.product_id";
+        PreparedStatement ps = con.prepareStatement(select);
+        ResultSet rs = ps.executeQuery(select);
+        while (rs.next()){
+            Reading reading = new Reading();
+            reading.setId(rs.getInt("product_id"));
+            reading.setName(rs.getString("product_name"));
+            reading.setReadingName(rs.getString("reading_name"));
+            reading.setAuthor(rs.getString("author"));
+            reading.setPublisher(rs.getString("publisher"));
+            reading.setPrice(rs.getDouble("price"));
+            reading.setProductNumber(rs.getInt("productNumber"));
+            readings.add(reading);
+
+        }
+
+        return readings;
+    }
     public Reading allReading(ResultSet rs) throws SQLException {
         Reading reading = new Reading();
-        reading.setName(rs.getString("name"));
+        reading.setId(rs.getInt("product_id"));
+        reading.setName(rs.getString("product_name"));
         reading.setReadingName(rs.getString("reading_name"));
         reading.setAuthor(rs.getString("author"));
         reading.setPublisher(rs.getString("publisher"));
@@ -77,20 +99,5 @@ public class ReadingDao extends ProductDao {
         reading.setProductNumber(rs.getInt("productNumber"));
 
         return reading;
-    }
-
-    public HashSet<Reading> readingHashSet() throws SQLException {
-        HashSet<Reading> readings = new HashSet<>();
-        String select="SELECT p.product_name,r.reading_name,r.author,r.publisher,p.price,p.productNumber" +
-                "FROM readings r" +
-                "JOIN products p" +
-                "ON p.product_id = r.product_id";
-        PreparedStatement ps = con.prepareStatement(select);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()){
-            Reading reading = allReading(rs);
-            readings.add(reading);
-        }
-        return readings;
     }
 }

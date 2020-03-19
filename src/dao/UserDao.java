@@ -43,24 +43,21 @@ public class UserDao {
 
     public User insertUser(User user) throws SQLException {
         getIdByTable id = new getIdByTable();
-        String insert = "insert to users(first_name,last_name,user_name,password,phone_number,email,address_id)" +
+        int addressId = id.getId("address");
+        String insert = "insert into users(first_name,last_name,user_name,password,phone_number,email,address_id)" +
                 "values(?,?,?,?,?,?,?)";
         PreparedStatement ps = con.prepareStatement(insert);
+
         ps.setString(1, user.getFirstName());
         ps.setString(2, user.getLastName());
         ps.setString(3, user.getUserName());
         ps.setString(4, user.getPassword());
         ps.setString(5, user.getPhoneNumber());
         ps.setString(6, user.getEmail());
-        ps.setInt(7, id.getId("address"));////////////////////
+        ps.setInt(7, addressId);
         ps.executeUpdate();
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return showUser(rs);
 
-        }
-        ps.close();
-        return null;
+        return getUserById(user.getId());
     }
 
     /*

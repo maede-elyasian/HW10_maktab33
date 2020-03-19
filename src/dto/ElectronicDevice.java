@@ -8,12 +8,12 @@ public class ElectronicDevice extends Product {
     private String productionYear;
 
 
-    public ElectronicDevice(){
+    public ElectronicDevice() {
 
     }
 
-    public ElectronicDevice(String name,double price,int productNumber,String model, String brand, String productionYear) {
-        super(name,price,productNumber);
+    public ElectronicDevice(String name, double price, int productNumber, String model, String brand, String productionYear) {
+        super(name, price, productNumber);
         this.model = model;
         this.brand = brand;
         this.productionYear = productionYear;
@@ -51,14 +51,14 @@ public class ElectronicDevice extends Product {
         ElectronicDevice that = (ElectronicDevice) o;
         return
                 Objects.equals(getModel(), that.getModel()) &&
-                Objects.equals(getBrand(), that.getBrand()) &&
-                Objects.equals(getProductionYear(), that.getProductionYear());
+                        Objects.equals(getBrand(), that.getBrand()) &&
+                        Objects.equals(getProductionYear(), that.getProductionYear());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(super.hashCode(), getModel(), getBrand(),getProductionYear());
+        return Objects.hash(super.hashCode(), getModel(), getBrand(), getProductionYear());
     }
 
     @Override
@@ -67,6 +67,8 @@ public class ElectronicDevice extends Product {
                 "model='" + model + '\'' +
                 ", brand='" + brand + '\'' +
                 ", productionYear='" + productionYear + '\'' +
+                ", price='" + super.getPrice() + '\'' +
+                ", number='" + super.getProductNumber() + '\'' +
                 '}';
     }
 }

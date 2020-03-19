@@ -7,7 +7,8 @@ public class Shoe extends Product {
     private String color;
     private String size;
 
-    public Shoe(){}
+    public Shoe() {
+    }
 
     public Shoe(String name, double price, int productNumber, String brand, String color, String size) {
         super(name, price, productNumber);
@@ -60,11 +61,13 @@ public class Shoe extends Product {
     @Override
     public String toString() {
         return "Shoe{" +
-                "id='"+
-                super.getId()+'\''+
-                "brand='" + brand + '\'' +
+                "id='" + super.getId() + '\'' +
+                ", brand='" + brand + '\'' +
                 ", color='" + color + '\'' +
                 ", size='" + size + '\'' +
-                '}';
+                ", price='" + super.getPrice() + '\'' +
+                ", number:'" + super.getProductNumber() + '\'' + "}"
+
+                ;
     }
 }
