@@ -59,10 +59,12 @@ public class Shoe extends Product {
 
     @Override
     public String toString() {
-        return  super.toString()+
-                "Shoe{" +
+        return "Shoe{" +
+                "id='"+
+                super.getId()+'\''+
                 "brand='" + brand + '\'' +
                 ", color='" + color + '\'' +
-                ", size='" + size + '\'' ;
+                ", size='" + size + '\'' +
+                '}';
     }
 }

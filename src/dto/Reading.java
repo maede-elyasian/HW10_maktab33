@@ -11,7 +11,7 @@ public class Reading extends Product {
     }
 
 
-    public Reading(String name, double price, int productNumber,String readingName, String author, String publisher) {
+    public Reading(String name, double price, int productNumber, String readingName, String author, String publisher) {
         super(name, price, productNumber);
         this.readingName = readingName;
         this.author = author;
@@ -60,10 +60,13 @@ public class Reading extends Product {
 
     @Override
     public String toString() {
-        return super.toString() +
-                "Reading{" +
-                "author='" + author + '\'' +
+        return "Reading{" +
+                "id='" + super.getId() + '\'' +
+                ", readingName='" + readingName + '\'' +
+                ", author='" + author + '\'' +
                 ", publisher='" + publisher + '\'' +
+                ", price='" + super.getPrice() + '\'' +
+                " ,product number='" + super.getProductNumber() +
                 '}';
     }
 }
