@@ -17,11 +17,12 @@ public class ShoeDao extends ProductDao {
     }
 
     public Shoe getShoeById(int id) throws SQLException {
-        String sql = "SELECT p.product_name,sh.brand,sh.size,sh.color,p.price,p.productNumber\n" +
+        String sql = "SELECT p.product_id,p.product_name,sh.brand,sh.size,sh.color,p.price,p.productNumber\n" +
                 "FROM online_store.shoes sh\n" +
                 "join online_store.products p\n" +
-                "on p.product_id = sh.product_id WHERE sh.product_id=2";
+                "on p.product_id = sh.product_id WHERE sh.product_id=?";
         PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1,id);
         ResultSet rs = ps.executeQuery();
         if (rs.next()) {
             return allShoes(rs);
@@ -66,10 +67,12 @@ public class ShoeDao extends ProductDao {
 
     public Shoe allShoes(ResultSet rs) throws SQLException {
         Shoe shoe = new Shoe();
+        shoe.setId(rs.getInt("product_id"));
         shoe.setName(rs.getString("product_name"));
         shoe.setBrand(rs.getString("brand"));
         shoe.setSize(rs.getString("size"));
         shoe.setColor(rs.getString("color"));
+        shoe.setPrice(rs.getDouble("price"));
         shoe.setProductNumber(rs.getInt("productNumber"));
         return shoe;
     }

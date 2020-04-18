@@ -72,6 +72,7 @@ public class ElectronicDeviceDao extends ProductDao {
 
     public ElectronicDevice allDevices(ResultSet rs) throws SQLException {
         ElectronicDevice electronicDevice = new ElectronicDevice();
+        electronicDevice.setId(rs.getInt("product_id"));
         electronicDevice.setName(rs.getString("product_name"));
         electronicDevice.setModel(rs.getString("model"));
         electronicDevice.setBrand(rs.getString("brand"));

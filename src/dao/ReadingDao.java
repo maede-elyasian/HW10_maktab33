@@ -18,10 +18,10 @@ public class ReadingDao extends ProductDao {
     }
 
     public Reading getReadingById(int id) throws SQLException {
-        String select="SELECT p.product_name,r.reading_name,r.author,r.publisher,p.price,p.productNumber" +
-                "FROM readings r" +
-                "JOIN products p" +
-                "ON p.product_id = r.product_id where p.product_id=?";
+        String select="SELECT p.product_id,p.product_name,r.reading_name,r.author,r.publisher,p.price,p.productNumber" +
+                " FROM readings r" +
+                " JOIN products p" +
+                " ON p.product_id = r.product_id where p.product_id=?";
         PreparedStatement ps = con.prepareStatement(select);
         ps.setInt(1,id);
 
@@ -46,7 +46,7 @@ public class ReadingDao extends ProductDao {
     }
     public void deleteReading(int id,Reading reading) throws SQLException {
         Reading deletedReading = getReadingById(id);
-        String delete="delete from readings where id=?";
+        String delete="delete from readings where reading_id=?";
         PreparedStatement ps = con.prepareStatement(delete);
         ps.setInt(1,id);
         super.deleteProduct(id);
@@ -74,14 +74,8 @@ public class ReadingDao extends ProductDao {
         PreparedStatement ps = con.prepareStatement(select);
         ResultSet rs = ps.executeQuery(select);
         while (rs.next()){
-            Reading reading = new Reading();
-            reading.setId(rs.getInt("product_id"));
-            reading.setName(rs.getString("product_name"));
-            reading.setReadingName(rs.getString("reading_name"));
-            reading.setAuthor(rs.getString("author"));
-            reading.setPublisher(rs.getString("publisher"));
-            reading.setPrice(rs.getDouble("price"));
-            reading.setProductNumber(rs.getInt("productNumber"));
+
+            Reading reading = allReading(rs);
             readings.add(reading);
 
         }

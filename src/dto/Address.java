@@ -50,8 +50,7 @@ public class Address {
     @Override
     public String toString() {
         return "Address{" +
-                "id=" + id +
-                ", state='" + state + '\'' +
+                "state='" + state + '\'' +
                 ", city='" + city + '\'' +
                 ", street='" + street + '\'' +
                 ", postalCode='" + postalCode + '\'' +

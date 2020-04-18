@@ -24,8 +24,8 @@ public class AddressDao {
         return null;
     }
 
-    public Address insertAddress(Address address) throws SQLException {
-        String insert = "insert into address(state,city,street,postal_codee) values(?,?,?,?)";
+    public void insertAddress(Address address) throws SQLException {
+        String insert = "insert into address(state,city,street,postal_code) values(?,?,?,?)";
         PreparedStatement ps = con.prepareStatement(insert);
 
         ps.setString(1, address.getState());
@@ -34,13 +34,6 @@ public class AddressDao {
         ps.setString(4, address.getPostalCode());
         ps.executeUpdate();
 
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return showAll(rs);
-        }
-        ps.close();
-        rs.close();
-        return null;
     }
 
     public Address deleteAddress(int id) throws SQLException {

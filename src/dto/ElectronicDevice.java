@@ -64,7 +64,8 @@ public class ElectronicDevice extends Product {
     @Override
     public String toString() {
         return "ElectronicDevice{" +
-                "model='" + model + '\'' +
+                "id='" + super.getId() + '\''+
+                ", model='" + model + '\'' +
                 ", brand='" + brand + '\'' +
                 ", productionYear='" + productionYear + '\'' +
                 ", price='" + super.getPrice() + '\'' +

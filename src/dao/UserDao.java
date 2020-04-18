@@ -91,13 +91,13 @@ public class UserDao {
 
     public User showUser(ResultSet rs) throws SQLException {
         User user = new User();
-        user.setFirstName(rs.getNString("first_name"));
+        user.setFirstName(rs.getString("first_name"));
         user.setLastName(rs.getString("last_name"));
         user.setUserName(rs.getString("user_name"));
         user.setPassword(rs.getString("password"));
         user.setPhoneNumber(rs.getString("phone_number"));
         user.setEmail(rs.getString("email"));
-        user.setAddress(addressDao.getAddressbyId(rs.getInt("addrss_id")));
+        user.setAddress(addressDao.getAddressbyId(rs.getInt("address_id")));
         return user;
 
     }

@@ -1,5 +1,6 @@
 package app;
 
+import dao.AddressDao;
 import dao.UserDao;
 import dao.getIdByTable;
 import dto.Address;
@@ -58,10 +59,16 @@ public class SignUp {
         String pc = in.nextLine();
         address.setPostalCode(pc);
 
+
         user.setAddress(address);
+
+        AddressDao addressDao = new AddressDao();
+        addressDao.insertAddress(address);
 
         UserDao userDao = new UserDao();
         userDao.insertUser(user);
+
+
 
     }
 
