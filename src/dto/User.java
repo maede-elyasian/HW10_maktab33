@@ -11,6 +11,7 @@ public class User {
     private String password;
     private String phoneNumber;
     private String email;
+    private int age;
     private Address address;
 
     public int getId() {
@@ -67,6 +68,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public int getAge() {
+        return age;
     }
 
     public Address getAddress() {
