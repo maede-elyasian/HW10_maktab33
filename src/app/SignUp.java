@@ -38,6 +38,7 @@ public class SignUp {
         System.out.print("age: ");
         int age = in.nextInt();
         user.setAge(age);
+        in.nextLine();
 
         System.out.print("email: ");
         String email = in.nextLine();
