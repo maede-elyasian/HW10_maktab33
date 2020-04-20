@@ -35,6 +35,10 @@ public class SignUp {
         String lastName = in.nextLine();
         user.setLastName(lastName);
 
+        System.out.print("age: ");
+        int age = in.nextInt();
+        user.setAge(age);
+
         System.out.print("email: ");
         String email = in.nextLine();
         user.setEmail(email);
