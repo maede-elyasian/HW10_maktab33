@@ -113,6 +113,7 @@ public class User {
                 "password:" + password + "," +
                 "first name:" + firstName + "," +
                 "last name:" + lastName + "," +
+                "age: " + age + "," +
                 "email:" + email + "," +
                 "phone number:" + phoneNumber + "," +
                 "address:" + address + "}";
