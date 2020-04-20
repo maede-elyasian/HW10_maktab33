@@ -44,17 +44,18 @@ public class UserDao {
     public User insertUser(User user) throws SQLException {
         getIdByTable id = new getIdByTable();
         int addressId = id.getId("address");
-        String insert = "insert into users(first_name,last_name,user_name,password,phone_number,email,address_id)" +
-                "values(?,?,?,?,?,?,?)";
+        String insert = "insert into users(first_name,last_name,age,user_name,password,phone_number,email,address_id)" +
+                "values(?,?,?,?,?,?,?,?)";
         PreparedStatement ps = con.prepareStatement(insert);
 
         ps.setString(1, user.getFirstName());
         ps.setString(2, user.getLastName());
-        ps.setString(3, user.getUserName());
-        ps.setString(4, user.getPassword());
-        ps.setString(5, user.getPhoneNumber());
-        ps.setString(6, user.getEmail());
-        ps.setInt(7, addressId);
+        ps.setInt(3,user.getAge());
+        ps.setString(4, user.getUserName());
+        ps.setString(5, user.getPassword());
+        ps.setString(6, user.getPhoneNumber());
+        ps.setString(7, user.getEmail());
+        ps.setInt(8, addressId);
         ps.executeUpdate();
 
         return getUserById(user.getId());
@@ -93,6 +94,7 @@ public class UserDao {
         User user = new User();
         user.setFirstName(rs.getString("first_name"));
         user.setLastName(rs.getString("last_name"));
+        user.setAge(rs.getInt("age"));
         user.setUserName(rs.getString("user_name"));
         user.setPassword(rs.getString("password"));
         user.setPhoneNumber(rs.getString("phone_number"));
