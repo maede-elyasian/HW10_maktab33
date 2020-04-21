@@ -1,5 +1,6 @@
-package HW12;
+package HW12_a;
 
+import HW12_a.AgeSort;
 import dao.UserDao;
 import dto.User;
 
@@ -21,7 +22,7 @@ public class Main {
         Collections.sort(user,new AgeSort());
         System.out.println("after:\n" + user.toString());
 
-        
+
 
 
     }
