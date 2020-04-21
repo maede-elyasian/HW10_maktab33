@@ -18,9 +18,9 @@ public class Main {
         UserDao userDao = new UserDao();
         HashSet<User> users = userDao.allUsers();
         List<User> user = new ArrayList<>(users);
-        System.out.println("before sort: \n" + user.toString());
+        System.out.println("before sorting: \n" + user.toString());
         Collections.sort(user,new AgeSort());
-        System.out.println("after:\n" + user.toString());
+        System.out.println("after sorting:\n" + user.toString());
 
 
 
