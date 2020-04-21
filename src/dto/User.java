@@ -116,7 +116,7 @@ public class User {
                 "age: " + age + "," +
                 "email:" + email + "," +
                 "phone number:" + phoneNumber + "," +
-                "address:" + address + "}";
+                "address:" + address + "}" +"\n";
         return user;
     }
 }

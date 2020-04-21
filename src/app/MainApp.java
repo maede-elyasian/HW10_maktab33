@@ -6,7 +6,8 @@ public class MainApp {
 
     public static void main(String[] args) throws SQLException {
 
-        SignUp.createNewUser();
+        //SignUp.createNewUser();
+
         while (true) {
             ShopMenu.menu();
             Purchase.purchase();
