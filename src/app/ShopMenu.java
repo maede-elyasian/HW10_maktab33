@@ -8,7 +8,8 @@ public class ShopMenu {
         System.out.println("2)Add Order");
         System.out.println("3)Show your orders");
         System.out.println("4)Delete order");
-        System.out.println("5)Purchase");
+        System.out.println("5)sorted orders by price");
+        System.out.println("6)Purchase");
         System.out.println("--------------------------");
     }
 }
