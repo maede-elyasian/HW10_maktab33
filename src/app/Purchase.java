@@ -1,7 +1,6 @@
 package app;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
-import dao.*;
+import com.sun.org.apache.xpath.internal.operations.Or;import dao.*;
 import dto.Order;
 import dto.Product;
 import dto.Reading;
@@ -12,6 +11,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import static java.lang.System.exit;
+import static java.lang.System.lineSeparator;
 import static java.lang.System.setOut;
 
 public class Purchase {
@@ -63,7 +63,6 @@ public class Purchase {
                     total += product.getPrice();
                 }
                 System.out.println("total price: " + total);
-
                 break;
 
             case 4:
@@ -77,7 +76,6 @@ public class Purchase {
                 System.out.print("please enter product id for deleting: ");
                 id = in.nextInt();
                 orderDao.delete(id);
-
                 break;
 
 
@@ -88,10 +86,11 @@ public class Purchase {
                 for (Order order : orders2) {
                     productList.add(order.getProduct());
                 }
-                Collections.sort(productList, new PriceComparator());
-                System.out.println(productList.toString());
-                break;
 
+                Comparator<Product> productComparator = (p1, p2) -> p1.getPrice() > p2.getPrice() ? 1 : p1.getPrice() < p2.getPrice() ? -1 : 0;
+                Collections.sort(productList, productComparator);
+                productList.forEach(System.out::println);
+                break;
 
             case 6:
                 orderDao.delete(user.getId());

@@ -61,22 +61,7 @@ public class UserDao {
         return getUserById(user.getId());
     }
 
-    /*
-        public User updateUser(User user) throws SQLException {
-            String update = "Update users set first_name = ?,last_name=?,user_name=?,password=?,phone_number=?,email=?,address_id=?"+
-                             "where user_name =?";
-            PreparedStatement ps = con.prepareStatement(update);
-            ps.setString(1, user.getFirstName());
-            ps.setString(2, user.getLastName());
-            ps.setString(3, user.getUserName());
-            ps.setString(4, user.getPassword());
-            ps.setString(5, user.getPhoneNumber());
-            ps.setString(6, user.getEmail());
-            ps.setInt(7, user.getAddress().getId());
-           ps.setString(8,);
-            /////////////////////////////////////////////
-        }
-    */
+
     public User deleteUser(int id, User user) throws SQLException {
         User deletedUser = getUserById(id);
         int getId = getUserById(id).getAddress().getId();
