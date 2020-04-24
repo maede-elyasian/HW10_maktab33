@@ -9,12 +9,10 @@ import dto.User;
 
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static java.lang.System.exit;
+import static java.lang.System.lineSeparator;
 import static java.lang.System.setOut;
 
 public class Purchase {
@@ -75,7 +73,7 @@ public class Purchase {
 
                 for (Order order : orders1) {
                     products1.add(order.getProduct());
-                    System.out.print("{"+order.getProductType()+" id:" + order.getId() + "," + "}\n" );
+                    System.out.print("{" + order.getProductType() + " id:" + order.getId() + "," + "}\n");
                 }
                 System.out.print("please enter product id for deleting: ");
                 id = in.nextInt();
@@ -83,7 +81,24 @@ public class Purchase {
 
                 break;
 
+
             case 5:
+                HashSet<Order> orders2 = orderDao.getAllOrders(user.getId());
+                List<Product> productList = new ArrayList<>();
+
+                for (Order order : orders2) {
+                    productList.add(order.getProduct());}
+
+                Comparator<Product> productComparator =(p1,p2)->p1.getPrice()>p2.getPrice()?1:p1.getPrice()<p2.getPrice()?-1:0;
+                Collections.sort(productList,productComparator);
+
+                productList.forEach(System.out::println);
+
+
+                break;
+
+
+            case 6:
                 orderDao.delete(user.getId());
                 break;
 
