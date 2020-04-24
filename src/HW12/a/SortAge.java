@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 
-
 public class SortAge {
     static ArrayList<User> userList;
 
@@ -17,7 +16,6 @@ public class SortAge {
         try {
             HashSet<User> users = userDao.allUsers();
             userList = new ArrayList<>(users);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -25,7 +23,4 @@ public class SortAge {
         Collections.sort(userList,userComparator);
         return userList;
     }
-
-
-
 }
