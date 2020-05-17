@@ -1,8 +1,6 @@
 package dao;
 
-import connection.MyConnection;
-import dto.Product;
-import dto.Reading;
+import entity.Reading;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,14 +22,12 @@ public class ReadingDao extends ProductDao {
                 " ON p.product_id = r.product_id where p.product_id=?";
         PreparedStatement ps = con.prepareStatement(select);
         ps.setInt(1,id);
-
         ResultSet rs = ps.executeQuery();
         if(rs.next()){
             return allReading(rs);
         }
         return null;
     }
-
     public Reading insertReading(Reading reading) throws SQLException {
         String insert="insert into readings(reading_name,author,publisher,product_id) values(?,?,?,?)";
         PreparedStatement ps = con.prepareStatement(insert);

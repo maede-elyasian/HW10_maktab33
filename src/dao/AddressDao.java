@@ -1,7 +1,6 @@
 package dao;
 
-import connection.MyConnection;
-import dto.Address;
+import entity.Address;
 
 import java.sql.*;
 import java.util.HashSet;
@@ -25,10 +24,10 @@ public class AddressDao {
     }
 
     public void insertAddress(Address address) throws SQLException {
-        String insert = "insert into address(state,city,street,postal_code) values(?,?,?,?)";
+        String insert = "insert into address(country,city,street,postal_code) values(?,?,?,?)";
         PreparedStatement ps = con.prepareStatement(insert);
 
-        ps.setString(1, address.getState());
+        ps.setString(1, address.getCountry());
         ps.setString(2, address.getCity());
         ps.setString(3, address.getStreet());
         ps.setString(4, address.getPostalCode());
@@ -48,9 +47,9 @@ public class AddressDao {
     }
 
     public Address updateAddress(int id, Address address) throws SQLException {
-        String update = "update address set stat=?,city=?,street=?,postal_code=? where id=?";
+        String update = "update address set country=?,city=?,street=?,postal_code=? where id=?";
         PreparedStatement ps = con.prepareStatement(update);
-        ps.setString(1, address.getState());
+        ps.setString(1, address.getCountry());
         ps.setString(2, address.getCity());
         ps.setString(3, address.getStreet());
         ps.setString(4, address.getPostalCode());
@@ -77,7 +76,7 @@ public class AddressDao {
 
     private Address showAll(ResultSet rs) throws SQLException {
         Address address = new Address();
-        address.setState(rs.getString("state"));
+        address.setCity(rs.getString("country"));
         address.setCity(rs.getString("city"));
         address.setStreet(rs.getString("street"));
         address.setPostalCode(rs.getString("postal_code"));

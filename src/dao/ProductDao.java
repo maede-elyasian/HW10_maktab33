@@ -1,7 +1,6 @@
 package dao;
 
-import connection.MyConnection;
-import dto.Product;
+import entity.Product;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

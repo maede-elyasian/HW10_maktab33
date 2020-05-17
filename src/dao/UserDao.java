@@ -1,11 +1,8 @@
 package dao;
 
-import connection.MyConnection;
-import dto.User;
-import dto.Address;
-import dao.AddressDao;
+import entity.Reading;
+import entity.User;
 
-import javax.jws.soap.SOAPBinding;
 import java.sql.*;
 import java.util.HashSet;
 
@@ -17,15 +14,37 @@ public class UserDao {
         con = MyConnection.getConnection();
     }
 
-    public User getUserById(int id) throws SQLException {
+    public User getUserById(int id)  {
         String getUser = "select * from users where id =?";
-        PreparedStatement ps = con.prepareStatement(getUser);
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return showUser(rs);
+        PreparedStatement ps = null;
+        try {
+            ps = con.prepareStatement(getUser);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return showUser(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
+    }
+
+    public User getUserByUsername(String username){
+        String select = "select * from users where username=?";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(select);
+            preparedStatement.setString(1,username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                User user = showUser(resultSet);
+                return  user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
     }
 
     public HashSet<User> allUsers() throws SQLException {
@@ -77,6 +96,7 @@ public class UserDao {
 
     public User showUser(ResultSet rs) throws SQLException {
         User user = new User();
+        user.setId(rs.getInt("id"));
         user.setFirstName(rs.getString("first_name"));
         user.setLastName(rs.getString("last_name"));
         user.setAge(rs.getInt("age"));

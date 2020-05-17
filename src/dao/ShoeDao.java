@@ -1,7 +1,6 @@
 package dao;
 
-import connection.MyConnection;
-import dto.Shoe;
+import entity.Shoe;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,8 +17,8 @@ public class ShoeDao extends ProductDao {
 
     public Shoe getShoeById(int id) throws SQLException {
         String sql = "SELECT p.product_id,p.product_name,sh.brand,sh.size,sh.color,p.price,p.productNumber\n" +
-                "FROM online_store.shoes sh\n" +
-                "join online_store.products p\n" +
+                "FROM shoes sh\n" +
+                "join products p\n" +
                 "on p.product_id = sh.product_id WHERE sh.product_id=?";
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1,id);
@@ -80,8 +79,8 @@ public class ShoeDao extends ProductDao {
     public HashSet<Shoe> shoeHashSet() throws SQLException {
         HashSet<Shoe> shoes = new HashSet<>();
         String sql ="SELECT p.product_id,p.product_name,sh.brand,sh.size,sh.color,p.price,p.productNumber\n" +
-                "FROM online_store.shoes sh\n" +
-                "join online_store.products p\n" +
+                "FROM shoes sh\n" +
+                "join products p\n" +
                 "on p.product_id = sh.product_id";
         PreparedStatement ps = con.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();

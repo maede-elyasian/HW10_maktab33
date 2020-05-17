@@ -1,16 +1,13 @@
 package dao;
 
-import connection.MyConnection;
-import dto.*;
+import entity.*;
 
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 public class OrderDao {
     private Connection con;
@@ -54,10 +51,7 @@ public class OrderDao {
         return orders;
     }
 
-
-
     public Order updateOrder(int id, Order order) throws SQLException {
-
         String update = "update orders set product_type=?,product_id=?,user_id=? where id=?";
         PreparedStatement ps = con.prepareStatement(update);
         ps.setString(1, order.getProductType());
@@ -79,14 +73,12 @@ public class OrderDao {
     }
 
     public void delete(int id) throws SQLException {
-        String delete = "delete from orders where user_id=?";
+        String delete = "delete from orders where id=?";
         PreparedStatement ps = con.prepareStatement(delete);
         ps.setInt(1, id);
        ps.executeUpdate();
 
     }
-
-
     public Order showOrders(ResultSet rs) throws SQLException {
         Order order = new Order();
         UserDao userDao = new UserDao();
@@ -124,7 +116,6 @@ public class OrderDao {
                 break;
         }
         return order;
-
 
     }
 }
