@@ -1,21 +1,19 @@
 package entity;
 
-import java.util.Objects;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "readings")
+@PrimaryKeyJoinColumn(name = "product_id")
 public class Reading extends Product {
+    @Column(name = "reading_name")
     private String readingName;
+
+    @Column(name = "author")
     private String author;
+
+    @Column(name = "publisher")
     private String publisher;
-
-    public Reading() {
-    }
-
-    public Reading(String name, double price, int productNumber, String readingName, String author, String publisher) {
-        super(name, price, productNumber);
-        this.readingName = readingName;
-        this.author = author;
-        this.publisher = publisher;
-    }
 
     public String getAuthor() {
         return author;
@@ -39,22 +37,6 @@ public class Reading extends Product {
 
     public void setReadingName(String readingName) {
         this.readingName = readingName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Reading reading = (Reading) o;
-        return Objects.equals(getAuthor(), reading.getAuthor()) &&
-                Objects.equals(getPublisher(), reading.getPublisher());
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(super.hashCode(), getAuthor(), getPublisher());
     }
 
     @Override

@@ -1,10 +1,24 @@
 package entity;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "address")
 public class Address {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "country")
     private String country;
+
+    @Column(name = "city")
     private String city;
+
+    @Column(name = "street")
     private String street;
+
+    @Column(name = "postal_code")
     private String postalCode;
 
     public int getId() {
@@ -51,9 +65,8 @@ public class Address {
     public String toString() {
         return
                 "country:'" + country +
-                ",city:'" + city+
-                ",street:'" + street +
-                ",postalCode:'" + postalCode
-                ;
+                        ",city:'" + city +
+                        ",street:'" + street +
+                        ",postalCode:'" + postalCode;
     }
 }

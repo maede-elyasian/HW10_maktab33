@@ -1,22 +1,21 @@
-package service.userService;
+package view;
 
 import dao.*;
 import entity.*;
-import view.Main;
-
-import java.sql.SQLException;
+import service.userService.CheckOrders;
+import utility.PriceComparator;
 import java.util.*;
 
 public class GetNumberFromUser {
 
-    public static void execute() throws SQLException {
+    public static void execute(){
         Scanner in = new Scanner(System.in);
         ReadingDao readingDao = new ReadingDao();
         ElectronicDeviceDao electronicDeviceDao = new ElectronicDeviceDao();
         ShoeDao shoeDao = new ShoeDao();
         OrderDao orderDao = new OrderDao();
         CheckOrders checkOrders = new CheckOrders();
-        OperationLib proxy = new OperationLogProxy();
+        OperationLogDao operationLogDao = new OperationLogDao();
         User user = Main.user;
 
         System.out.print("enter your choice: ");
@@ -26,12 +25,12 @@ public class GetNumberFromUser {
         switch (choice) {
             case 1:
                 System.out.println("Items");
-                if (readingDao.readingHashSet() != null)
-                    System.out.println(readingDao.readingHashSet().toString());
-                if (electronicDeviceDao.electronicDeviceHashSet() != null)
-                    System.out.println(electronicDeviceDao.electronicDeviceHashSet().toString());
-                if (shoeDao.shoeHashSet() != null)
-                    System.out.println(shoeDao.shoeHashSet().toString());
+                if (readingDao.getAllReadings() != null)
+                    System.out.println(readingDao.getAllReadings().toString());
+                if (electronicDeviceDao.getAllDevices() != null)
+                    System.out.println(electronicDeviceDao.getAllDevices().toString());
+                if (shoeDao.getAllShoes() != null)
+                    System.out.println(shoeDao.getAllShoes().toString());
                 break;
 
             case 2:
@@ -39,20 +38,20 @@ public class GetNumberFromUser {
                 id = in.nextInt();
                 if (readingDao.getReadingById(id) != null)
                     checkOrders.addOrders(user, readingDao.getReadingById(id));
-                proxy.productLog("reading", user, "add");
+                operationLogDao.productLog("reading",user,"Add");
 
                 if (electronicDeviceDao.getElcDevById(id) != null)
                     checkOrders.addOrders(user, electronicDeviceDao.getElcDevById(id));
-                proxy.productLog("electronic device", user, "add");
+                operationLogDao.productLog("electronic device", user, "add");
 
                 if (shoeDao.getShoeById(id) != null)
                     checkOrders.addOrders(user, shoeDao.getShoeById(id));
-                proxy.productLog("shoe", user, "add");
+                operationLogDao.productLog("shoe", user, "add");
 
                 break;
 
             case 3:
-                HashSet<Order> orders = orderDao.getAllOrders(user.getId());
+                List<Order> orders = orderDao.getAllOrders(user.getId());
                 double total = 0.0;
                 List<Product> products = new ArrayList<>();
                 for (Order order : orders) {
@@ -61,11 +60,12 @@ public class GetNumberFromUser {
                 for (Product product : products) {
                     total += product.getPrice();
                 }
+                orders.forEach(System.out::println);
                 System.out.println("total price: " + total);
                 break;
 
             case 4:
-                HashSet<Order> orders1 = orderDao.getAllOrders(user.getId());
+                List<Order> orders1 = orderDao.getAllOrders(user.getId());
                 List<Product> products1 = new ArrayList<>();
 
                 for (Order order : orders1) {
@@ -75,12 +75,12 @@ public class GetNumberFromUser {
                 System.out.print("please enter product id for deleting: ");
                 id = in.nextInt();
                 String productName = orderDao.getOrderById(id).getProduct().getName();
-                proxy.productLog(productName, user, "delete");
-                orderDao.delete(id);
+                operationLogDao.productLog(productName, user, "delete");
+                orderDao.deleteOrder(id);
                 break;
 
             case 5:
-                HashSet<Order> orders2 = orderDao.getAllOrders(user.getId());
+                List<Order> orders2 = orderDao.getAllOrders(user.getId());
                 List<Product> productList = new ArrayList<>();
 
                 for (Order order : orders2) {
@@ -92,14 +92,14 @@ public class GetNumberFromUser {
 
             case 6:
                 double totalPrice = 0;
-                HashSet<Order> totalOrders = orderDao.getAllOrders(user.getId());
+                List<Order> totalOrders = orderDao.getAllOrders(user.getId());
                 totalPrice = totalOrders.stream().map(order -> order.getProduct().getPrice()).mapToDouble(Double::doubleValue).sum();
-                proxy.purchaseLog(user, totalPrice, "purchase");
-                orderDao.delete(user.getId());
+                operationLogDao.purchaseLog(user, totalPrice, "purchase");
+                orderDao.deleteOrder(user.getId());
                 break;
 
             case 7:
-                proxy.login(user, "logOut");
+                operationLogDao.login(user, "log Out");
                 System.exit(0);
 
         }

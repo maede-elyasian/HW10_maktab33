@@ -1,92 +1,49 @@
 package dao;
 
 import entity.Product;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashSet;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+import java.util.List;
 
 public class ProductDao {
-    private Connection con;
+    private SessionFactory sessionFactory = MySessionFactory.getSessionFactory();
+    private Transaction transaction;
 
-    public ProductDao() {
-        con = MyConnection.getConnection();
-    }
-
-    public Product getProductById(int id) throws SQLException {
-        String select = "select * from products where product_id=?";
-        PreparedStatement ps = con.prepareStatement(select);
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return showProdcuts(rs);
-
-        }
-        return null;
-    }
-
-    public Product insertProduct(Product product) throws SQLException {
-        String insert = "insert into products(name,price,productNumber) values(?,?,?)";
-        PreparedStatement ps = con.prepareStatement(insert);
-        ps.setString(1, product.getName());
-        ps.setDouble(2, product.getPrice());
-        ps.setInt(3, product.getProductNumber());
-        ps.executeUpdate();
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return showProdcuts(rs);
-        }
-        return null;
-    }
-
-    public boolean updateProduct(int id, Product product) throws SQLException {
-        String update = "update products set product_name=?,price=?,productNumber=? where product_id=?";
-        PreparedStatement ps = con.prepareStatement(update);
-        ps.setString(1, product.getName());
-        ps.setDouble(2, product.getPrice());
-        ps.setInt(3, product.getProductNumber());
-        ps.setInt(4, id);
-        int row = ps.executeUpdate();
-
-        return row == 1;
-
-
-    }
-
-    public Product deleteProduct(int id) throws SQLException {
-        String delete = "delete from products where product_id=?";
-        PreparedStatement ps = con.prepareStatement(delete);
-        ps.setInt(1, id);
-        ps.executeUpdate();
-
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return showProdcuts(rs);
-        }
-        return null;
-    }
-
-    public Product showProdcuts(ResultSet rs) throws SQLException {
-        Product product = new Product();
-        product.setId(rs.getInt("product_id"));
-        product.setName(rs.getString("product_name"));
-        product.setPrice(rs.getDouble("price"));
-        product.setProductNumber(rs.getInt("productNumber"));
+    public Product getProductById(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        transaction = session.beginTransaction();
+        Product product = session.get(Product.class, id);
+        transaction.commit();
         return product;
     }
 
-    public HashSet<Product> allProducts() throws SQLException {
-        HashSet<Product> products = new HashSet<>();
-        String sql = "select * from products";
-        PreparedStatement ps = con.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            Product product = showProdcuts(rs);
-            products.add(product);
-        }
-        return products;
-
+    public void deleteProduct(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        transaction = session.beginTransaction();
+        Query query = session.createQuery("delete from Product where id=:id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+        transaction.commit();
     }
+
+    public List<Product> getAllProducts() {
+        Session session = sessionFactory.getCurrentSession();
+        transaction = session.beginTransaction();
+        List products = session.createQuery("from Product", Product.class).list();
+        transaction.commit();
+        return products;
+    }
+
+    public void updateProduct(int id, int productNumber) {
+        Session session = sessionFactory.getCurrentSession();
+        transaction = session.beginTransaction();
+        Query query = session.createQuery("update Product p set p.productNumber=:num where p.id=:id")
+                .setParameter("num", productNumber)
+                .setParameter("id", id);
+        query.executeUpdate();
+        transaction.commit();
+    }
+
 }

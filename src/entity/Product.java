@@ -1,27 +1,32 @@
 package entity;
 
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Objects;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "products")
 public class Product {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_id",nullable = false)
+    private Integer id;
+
+    @Column(name = "product_name")
     private String name;
+
+    @Column(name = "price")
     private double price;
+
+    @Column(name = "productNumber")
     private int productNumber;
 
-    public Product() {
-    }
-
-    public Product(String name, double price, int productNumber) {
-        this.name = name;
-        this.price = price;
-        this.productNumber = productNumber;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -50,26 +55,9 @@ public class Product {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return getId() == product.getId() &&
-                Double.compare(product.getPrice(), getPrice()) == 0 &&
-                getProductNumber() == product.getProductNumber() &&
-                Objects.equals(getName(), product.getName());
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getId(), getName(), getPrice(), getProductNumber());
-    }
-
-    @Override
     public String toString() {
         return "Product{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", productNumber=" + productNumber +

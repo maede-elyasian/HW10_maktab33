@@ -1,21 +1,19 @@
 package entity;
 
-import java.util.Objects;
+import javax.persistence.*;
 
+@Entity
+@Table(name = "shoes")
+@PrimaryKeyJoinColumn(name = "product_id")
 public class Shoe extends Product {
+    @Column(name = "brand")
     private String brand;
+
+    @Column(name = "color")
     private String color;
+
+    @Column(name = "size")
     private String size;
-
-    public Shoe() {
-    }
-
-    public Shoe(String name, double price, int productNumber, String brand, String color, String size) {
-        super(name, price, productNumber);
-        this.brand = brand;
-        this.color = color;
-        this.size = size;
-    }
 
     public String getBrand() {
         return brand;
@@ -42,23 +40,6 @@ public class Shoe extends Product {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Shoe shoe = (Shoe) o;
-        return Objects.equals(getBrand(), shoe.getBrand()) &&
-                Objects.equals(getColor(), shoe.getColor()) &&
-                Objects.equals(getSize(), shoe.getSize());
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(super.hashCode(), getBrand(), getColor(), getSize());
-    }
-
-    @Override
     public String toString() {
         return "Shoe{" +
                 "id='" + super.getId() + '\'' +
@@ -66,8 +47,8 @@ public class Shoe extends Product {
                 ", color='" + color + '\'' +
                 ", size='" + size + '\'' +
                 ", price='" + super.getPrice() + '\'' +
-                ", number:'" + super.getProductNumber() + '\'' + "}"
+                ", number:'" + super.getProductNumber() + '\'' + "}";
 
-                ;
+
     }
 }

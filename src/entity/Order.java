@@ -1,9 +1,23 @@
 package entity;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "orders")
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "product_type")
     private String productType;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
+
+    @JoinColumn(name = "product_id")
+    @OneToOne
     private Product product;
 
     public int getId() {

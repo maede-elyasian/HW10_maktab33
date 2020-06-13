@@ -1,4 +1,4 @@
-package service.userService;
+package view;
 
 import dao.AddressDao;
 import dao.UserDao;
@@ -9,11 +9,11 @@ import entity.User;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-public class CreateNewUser {
+public class CreateNewAccount {
     private static User user = new User();
     private static Address address = new Address();
 
-    public static User createNewAccount() throws SQLException {
+    public static User createNewAccount(){
         Scanner in = new Scanner(System.in);
         System.out.println("Please enter your information to create new account");
 
@@ -48,7 +48,7 @@ public class CreateNewUser {
 
         System.out.print("country: ");
         String country = in.nextLine();
-        address.setCity(country);
+        address.setCountry(country);
 
         System.out.print("city: ");
         String city = in.nextLine();
@@ -67,13 +67,13 @@ public class CreateNewUser {
         AddressDao addressDao = new AddressDao();
         UserDao userDao = new UserDao();
 
-        addressDao.insertAddress(address);
-        userDao.insertUser(user);
+        addressDao.saveAddress(address);
+        userDao.saveUser(user);
 
         return user;
     }
 
-    public static User getUser() throws SQLException {
+    public static User getUser() {
         getIdByTable getIdByTable = new getIdByTable();
         user.setId(getIdByTable.getId("users"));
         return user;

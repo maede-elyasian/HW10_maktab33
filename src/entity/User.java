@@ -1,19 +1,39 @@
 package entity;
 
-
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String firstName;
-    private String lastName;
-    private String userName;
-    private String password;
-    private String phoneNumber;
-    private String email;
-    private int age;
-    private Address address;
 
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "user_name")
+    private String userName;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "age")
+    private int age;
+
+    @JoinColumn(name = "address_id")
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Address address;
 
     public int getId() {
         return id;
@@ -88,37 +108,16 @@ public class User {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id == user.id &&
-                Objects.equals(getFirstName(), user.getFirstName()) &&
-                Objects.equals(getLastName(), user.getLastName()) &&
-                Objects.equals(getUserName(), user.getUserName()) &&
-                Objects.equals(getPassword(), user.getPassword()) &&
-                Objects.equals(getPhoneNumber(), user.getPhoneNumber()) &&
-                Objects.equals(getEmail(), user.getEmail()) &&
-                Objects.equals(getAddress(), user.getAddress());
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getFirstName(), getLastName(), getUserName(), getPassword(), getPhoneNumber(),getEmail(), getAddress());
-    }
-
-    @Override
     public String toString() {
         String user =
                 "user name:" + userName + "," +
-                "password:" + password + "," +
-                "first name:" + firstName + "," +
-                "last name:" + lastName + "," +
-                "age: " + age + "," +
-                "email:" + email + "," +
-                "phone number:" + phoneNumber + "," +
-                "address:" + address + "\n";
+                        "password:" + password + "," +
+                        "first name:" + firstName + "," +
+                        "last name:" + lastName + "," +
+                        "age: " + age + "," +
+                        "email:" + email + "," +
+                        "phone number:" + phoneNumber + "," +
+                        "address:" + address + "\n";
         return user;
     }
 }

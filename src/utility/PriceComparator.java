@@ -1,4 +1,4 @@
-package service.userService;
+package utility;
 
 import entity.Product;
 import java.util.Comparator;

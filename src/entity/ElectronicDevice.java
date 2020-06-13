@@ -1,23 +1,17 @@
 package entity;
 
+import javax.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name = "electronicdevices")
+@PrimaryKeyJoinColumn(name = "product_id")
 public class ElectronicDevice extends Product {
     private String model;
     private String brand;
+
+    @Column(name = "production_year")
     private String productionYear;
-
-
-    public ElectronicDevice() {
-
-    }
-
-    public ElectronicDevice(String name, double price, int productNumber, String model, String brand, String productionYear) {
-        super(name, price, productNumber);
-        this.model = model;
-        this.brand = brand;
-        this.productionYear = productionYear;
-    }
 
     public String getModel() {
         return model;
@@ -64,7 +58,7 @@ public class ElectronicDevice extends Product {
     @Override
     public String toString() {
         return "ElectronicDevice{" +
-                "id='" + super.getId() + '\''+
+                "id='" + super.getId() + '\'' +
                 ", model='" + model + '\'' +
                 ", brand='" + brand + '\'' +
                 ", productionYear='" + productionYear + '\'' +

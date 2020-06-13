@@ -1,16 +1,38 @@
 package entity;
 
+import javax.persistence.*;
 import java.sql.Date;
-import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
+@Entity
+@Table(name = "operation_log")
 public class OperationLog {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name = "operation")
     private String operation;
+
+    @JoinColumn(name = "user_id")
+    @OneToOne
     private User authority;
+
+    @Column(name = "date")
     private LocalDate date;
-    private Time time;
+
+    @Column(name = "time")
+    private LocalTime time;
+
+
+    public OperationLog(String operation, User user, LocalDate date, LocalTime time) {
+        this.operation = operation;
+        this.authority = user;
+        this.date = date;
+        this.time = time;
+
+    }
 
     public OperationLog() {
     }
@@ -39,19 +61,17 @@ public class OperationLog {
         this.date = date;
     }
 
-    public Time getTime() {
+    public LocalTime getTime() {
         return time;
     }
 
     public void setTime(LocalTime time) {
-        DateTimeFormatter ob = DateTimeFormatter.ofPattern("HH:mm:ss");
-        String timeformat = time.format(ob);
-        this.time = Time.valueOf(timeformat);
+        this.time = time;
     }
 
     public String toString() {
         return
-                        "date:'" + date + '\'' +
+                "date:'" + date + '\'' +
                         ", time: '" + time +
                         "', operation: '" + operation +
                         "'\n";

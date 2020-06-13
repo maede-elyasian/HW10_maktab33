@@ -1,96 +1,58 @@
 package dao;
 
-import entity.OperationLib;
 import entity.OperationLog;
 import entity.User;
-
-import java.sql.*;
+import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
-import static java.sql.Time.*;
+public class OperationLogDao {
+    private static SessionFactory sessionFactory = MySessionFactory.getSessionFactory();
+    private Transaction transaction;
 
-public class OperationLogDao implements OperationLib {
-    private static Connection connection = MyConnection.getConnection();
-    private static final String insert = "insert into operation_log values(?,?,?,?)";
-    private static PreparedStatement preparedStatement;
 
-    @Override
     public void productLog(String product, User user, String operation) {
+        Session session = sessionFactory.getCurrentSession();
+        transaction = session.beginTransaction();
         String operation2 = operation + " " + product;
-        setPreparedStatement(user, operation2);
+        OperationLog operationLog = new OperationLog(operation2,user,LocalDate.now(),LocalTime.now());
+        session.save(operationLog);
+        transaction.commit();
     }
 
-    @Override
+
     public void login(User user, String operation) {
-        setPreparedStatement(user, operation);
+        Session session = sessionFactory.getCurrentSession();
+        transaction = session.beginTransaction();
+        OperationLog operationLog = new OperationLog(operation, user, LocalDate.now(),LocalTime.now());
+        session.save(operationLog);
+        transaction.commit();
     }
 
-    @Override
+
     public void purchaseLog(User user, double totalPrice, String operation) {
+        Session session = sessionFactory.getCurrentSession();
+        transaction = session.beginTransaction();
         String operation2 = operation + " " + String.valueOf(totalPrice);
-        setPreparedStatement(user, operation2);
+        OperationLog operationLog = new OperationLog(operation2, user,LocalDate.now(),LocalTime.now());
+        session.save(operationLog);
+        transaction.commit();
     }
 
     public List<OperationLog> getAllOperations(int id) {
-        String select = "select * from operation_log where user_id=?";
-        List<OperationLog> operationLogs = new ArrayList<>();
-        try {
-            preparedStatement = connection.prepareStatement(select);
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                operationLogs.add(getAllOperations(resultSet));
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return operationLogs;
+        Session session = sessionFactory.getCurrentSession();
+        transaction = session.beginTransaction();
+        NativeQuery nativeQuery = session.createNativeQuery("select * from operation_log where user_id=?",OperationLog.class);
+        nativeQuery.setParameter(1, id);
+        List<OperationLog> list = nativeQuery.getResultList();
+        transaction.commit();
+        return list;
     }
 
-    private static Time getTime() {
-        LocalTime localTime = LocalTime.now();
-        DateTimeFormatter ob = DateTimeFormatter.ofPattern("HH:mm:ss");
-        String timeformat = localTime.format(ob);
-        return valueOf(timeformat);
-    }
-
-    private static Date getDate() {
-        LocalDate localDate = LocalDate.now();
-        return Date.valueOf(localDate);
-    }
-
-    private static OperationLog getAllOperations(ResultSet resultSet) {
-        OperationLog operationLog = new OperationLog();
-        UserDao userDao = new UserDao();
-        try {
-            int userId = resultSet.getInt("user_id");
-            operationLog.setAuthority(userDao.getUserById(userId));
-            operationLog.setOperation(resultSet.getString("operation"));
-            operationLog.setTime(resultSet.getTime("time").toLocalTime());
-            operationLog.setDate(resultSet.getDate("date").toLocalDate());
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return operationLog;
-    }
-
-    private void setPreparedStatement(User user, String operation) {
-        try {
-            preparedStatement = connection.prepareStatement(insert);
-            preparedStatement.setDate(1, getDate());
-            preparedStatement.setTime(2, getTime());
-            preparedStatement.setString(3, operation);
-            preparedStatement.setInt(4, user.getId());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }
 
