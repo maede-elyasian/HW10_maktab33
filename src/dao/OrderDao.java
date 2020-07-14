@@ -5,16 +5,19 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class OrderDao {
+    @Autowired
     private SessionFactory sessionFactory = MySessionFactory.getSessionFactory();
-    private Transaction transaction;
 
     public Order getOrderById(int id) {
         Session session = sessionFactory.getCurrentSession();
-        transaction = session.beginTransaction();
+        Transaction transaction = session.beginTransaction();
         Order order = session.get(Order.class, id);
         transaction.commit();
         return order;
@@ -22,14 +25,14 @@ public class OrderDao {
 
     public void saveOrder(Order order) {
         Session session = sessionFactory.getCurrentSession();
-        transaction = session.beginTransaction();
+        Transaction transaction = session.beginTransaction();
         session.save(order);
         transaction.commit();
     }
 
     public List<Order> getAllOrders(int userId) {
         Session session = sessionFactory.getCurrentSession();
-        transaction = session.beginTransaction();
+        Transaction transaction = session.beginTransaction();
         Query query = session.createQuery("from Order o where o.user.id=:id",Order.class);
         query.setParameter("id", userId);
         List<Order> orders = query.list();
@@ -39,8 +42,10 @@ public class OrderDao {
 
     public void deleteOrder(int id) {
         Session session = sessionFactory.getCurrentSession();
-        transaction = session.beginTransaction();
-        Query<Order> query = session.createQuery("delete from Order o where o.id=:id");
+        Transaction transaction = session.beginTransaction();
+
+        Query<Order> query = session.createQuery("delete from Order o where o.user.id=:id");
+
         query.setParameter("id", id);
         query.executeUpdate();
         transaction.commit();

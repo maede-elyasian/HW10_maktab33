@@ -7,17 +7,20 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.*;
 import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import service.userService.UserValidationService;
 
 import java.util.List;
 
+@Component
 public class UserDao {
-
+@Autowired
     private SessionFactory sessionFactory = MySessionFactory.getSessionFactory();
-    private Transaction transaction;
 
     public User getUserById(int id) {
         Session session = sessionFactory.getCurrentSession();
-        transaction = session.beginTransaction();
+        Transaction transaction = session.beginTransaction();
         User user = session.get(User.class, id);
         transaction.commit();
         return user;
@@ -25,7 +28,7 @@ public class UserDao {
 
     public List<User> getAllUsers() {
         Session session = sessionFactory.getCurrentSession();
-        transaction = session.beginTransaction();
+        Transaction transaction = session.beginTransaction();
         List users = session.createQuery("from User", User.class).list();
         transaction.commit();
         return users;
@@ -33,14 +36,16 @@ public class UserDao {
 
     public void saveUser(User user) {
         Session session = sessionFactory.getCurrentSession();
-        transaction = session.beginTransaction();
-        session.save(user);
-        transaction.commit();
+        Transaction transaction = session.beginTransaction();
+        if (UserValidationService.isValidUser(user)) {
+            session.save(user);
+            transaction.commit();
+        }
     }
 
     public void deleteUser(int id) {
         Session session = sessionFactory.getCurrentSession();
-        transaction = session.beginTransaction();
+        Transaction transaction = session.beginTransaction();
         Query<User> query = session.createQuery("delete from User where id=:id", User.class);
         query.setParameter("id", id);
         query.executeUpdate();
@@ -50,7 +55,7 @@ public class UserDao {
     public User searchUser(String username, String password) {
         if (username != null && password != null) {
             Session session = sessionFactory.getCurrentSession();
-            transaction = session.beginTransaction();
+            Transaction transaction = session.beginTransaction();
             Criteria criteria = session.createCriteria(User.class);
             Criterion c1 = Restrictions.eq("userName", username);
             Criterion c2 = Restrictions.eq("password", password);
