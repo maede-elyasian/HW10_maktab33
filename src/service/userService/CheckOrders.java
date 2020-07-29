@@ -1,16 +1,23 @@
 package service.userService;
 
+import config.BeanConfig;
 import dao.OrderDao;
 import dao.ProductDao;
 import entity.Order;
 import entity.Product;
 import entity.User;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 
 public class CheckOrders {
-    OrderDao orderDao = new OrderDao();
-    ProductDao productDao = new ProductDao();
 
-    public void addOrders(User user, Product product){
+    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BeanConfig.class);
+
+    OrderDao orderDao = applicationContext.getBean(OrderDao.class);
+    ProductDao productDao = applicationContext.getBean(ProductDao.class);
+
+    public void addOrders(User user, Product product) {
         if (orderDao.getAllOrders(user.getId()).size() < 5) {
             if (productDao.getProductById(product.getId()).getProductNumber() > 0) {
                 product.setProductNumber(product.getProductNumber() - 1);

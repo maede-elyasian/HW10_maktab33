@@ -8,15 +8,20 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.*;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import service.userService.UserValidationService;
+import service.userService.validation.UserValidationService;
 
 import java.util.List;
 
 @Component
+@Lazy
+@Scope("prototype")
 public class UserDao {
-@Autowired
-    private SessionFactory sessionFactory = MySessionFactory.getSessionFactory();
+
+    @Autowired
+    private SessionFactory sessionFactory;
 
     public User getUserById(int id) {
         Session session = sessionFactory.getCurrentSession();
@@ -53,17 +58,20 @@ public class UserDao {
     }
 
     public User searchUser(String username, String password) {
+        User user = null;
         if (username != null && password != null) {
             Session session = sessionFactory.getCurrentSession();
             Transaction transaction = session.beginTransaction();
-            Criteria criteria = session.createCriteria(User.class);
-            Criterion c1 = Restrictions.eq("userName", username);
-            Criterion c2 = Restrictions.eq("password", password);
-            Disjunction conjunction = Restrictions.disjunction(c1, c2);
-            criteria.add(conjunction);
-            User user = (User) criteria.uniqueResult();
-            transaction.commit();
-            return user;
+            Query query = session.createQuery("from User u where u.userName=:username and u.password=:password", User.class);
+            query.setParameter("username", username);
+            query.setParameter("password", password);
+            user = (User) query.uniqueResult();
+
+            if (user != null) {
+                transaction.commit();
+                return user;
+
+            }
         }
         return null;
     }

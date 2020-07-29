@@ -6,18 +6,23 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@Lazy
+@Scope("prototype")
 public class ProductDao {
     @Autowired
-    private SessionFactory sessionFactory = MySessionFactory.getSessionFactory();
+    private SessionFactory sessionFactory;
+
 
     public Product getProductById(int id) {
         Session session = sessionFactory.getCurrentSession();
-       Transaction transaction = session.beginTransaction();
+        Transaction transaction = session.beginTransaction();
         Product product = session.get(Product.class, id);
         transaction.commit();
         return product;
@@ -49,5 +54,4 @@ public class ProductDao {
         query.executeUpdate();
         transaction.commit();
     }
-
 }

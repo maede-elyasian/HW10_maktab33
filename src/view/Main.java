@@ -1,15 +1,21 @@
 package view;
 
+import config.BeanConfig;
 import dao.OperationLogDao;
 import entity.User;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import service.userService.Registration;
 
 public class Main {
     public static User user;
 
     public static void main(String[] args) {
-        user = Registration.signIn();
-        OperationLogDao operationLogDao = new OperationLogDao();
+        ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfig.class);
+
+        Registration registration = context.getBean(Registration.class);
+        user = registration.signIn();
+        OperationLogDao operationLogDao = context.getBean(OperationLogDao.class);
         operationLogDao.login(user, "login");
         menu();
     }
@@ -25,7 +31,7 @@ public class Main {
             System.out.println("6)purchase");
             System.out.println("7)exit");
             System.out.println("--------------------------");
-            GetNumberFromUser.execute();
+            OnlineShopMenu.execute();
         }
     }
 }

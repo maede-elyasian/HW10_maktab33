@@ -1,7 +1,6 @@
 package entity;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -34,6 +33,16 @@ public class User {
     @JoinColumn(name = "address_id")
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Address address;
+
+    public User() {
+    }
+
+    public User(String password, String phoneNumber, String email, int age) {
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.age = age;
+    }
 
     public int getId() {
         return id;

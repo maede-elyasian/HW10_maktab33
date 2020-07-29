@@ -1,28 +1,28 @@
 package entity;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
 @Table(name = "operation_log")
 public class OperationLog {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "operation")
+    @Column(name = "operations")
     private String operation;
 
     @JoinColumn(name = "user_id")
     @OneToOne
     private User authority;
 
-    @Column(name = "date")
+    @Column(name = "operation_date")
     private LocalDate date;
 
-    @Column(name = "time")
+    @Column(name = "operation_time")
     private LocalTime time;
 
 
@@ -53,8 +53,8 @@ public class OperationLog {
         this.authority = authority;
     }
 
-    public Date getDate() {
-        return Date.valueOf(date);
+    public LocalDate getDate() {
+        return date;
     }
 
     public void setDate(LocalDate date) {

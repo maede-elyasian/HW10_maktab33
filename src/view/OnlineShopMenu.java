@@ -1,21 +1,26 @@
 package view;
 
+import config.BeanConfig;
 import dao.*;
 import entity.*;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import service.userService.CheckOrders;
 import utility.PriceComparator;
+
 import java.util.*;
 
-public class GetNumberFromUser {
+public class OnlineShopMenu {
 
-    public static void execute(){
+    public static void execute() {
         Scanner in = new Scanner(System.in);
-        ReadingDao readingDao = new ReadingDao();
-        ElectronicDeviceDao electronicDeviceDao = new ElectronicDeviceDao();
-        ShoeDao shoeDao = new ShoeDao();
-        OrderDao orderDao = new OrderDao();
+        ApplicationContext context = new AnnotationConfigApplicationContext(BeanConfig.class);
+
+        OperationLogDao operationLogDao = context.getBean(OperationLogDao.class);
+        ProductDao productDao = context.getBean(ProductDao.class);
+        OrderDao orderDao = context.getBean(OrderDao.class);
         CheckOrders checkOrders = new CheckOrders();
-        OperationLogDao operationLogDao = new OperationLogDao();
+
         User user = Main.user;
 
         System.out.print("enter your choice: ");
@@ -25,28 +30,17 @@ public class GetNumberFromUser {
         switch (choice) {
             case 1:
                 System.out.println("Items");
-                if (readingDao.getAllReadings() != null)
-                    System.out.println(readingDao.getAllReadings().toString());
-                if (electronicDeviceDao.getAllDevices() != null)
-                    System.out.println(electronicDeviceDao.getAllDevices().toString());
-                if (shoeDao.getAllShoes() != null)
-                    System.out.println(shoeDao.getAllShoes().toString());
+                if (productDao.getAllProducts() != null)
+                    System.out.println(productDao.getAllProducts().toString());
                 break;
 
             case 2:
-                System.out.print("Please enter an id of products you want: ");
+                System.out.print("Please enter an id of product you want: ");
                 id = in.nextInt();
-                if (readingDao.getReadingById(id) != null)
-                    checkOrders.addOrders(user, readingDao.getReadingById(id));
-                operationLogDao.productLog("reading",user,"Add");
-
-                if (electronicDeviceDao.getElcDevById(id) != null)
-                    checkOrders.addOrders(user, electronicDeviceDao.getElcDevById(id));
-                operationLogDao.productLog("electronic device", user, "add");
-
-                if (shoeDao.getShoeById(id) != null)
-                    checkOrders.addOrders(user, shoeDao.getShoeById(id));
-                operationLogDao.productLog("shoe", user, "add");
+                if (productDao.getProductById(id) != null)
+                    checkOrders.addOrders(user, productDao.getProductById(id));
+                Product product1 = productDao.getProductById(id);
+                operationLogDao.productLog(product1.getName(), user, "Add");
 
                 break;
 
@@ -74,8 +68,8 @@ public class GetNumberFromUser {
                 }
                 System.out.print("please enter product id for deleting: ");
                 id = in.nextInt();
-                String productName = orderDao.getOrderById(id).getProduct().getName();
-                operationLogDao.productLog(productName, user, "delete");
+                Product product2 = productDao.getProductById(id);
+                operationLogDao.productLog(product2.getName(), user, "delete");
                 orderDao.deleteOrder(id);
                 break;
 

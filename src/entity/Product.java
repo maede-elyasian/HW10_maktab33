@@ -62,5 +62,6 @@ public class Product {
                 ", price=" + price +
                 ", productNumber=" + productNumber +
                 '}' + "\n";
+
     }
 }

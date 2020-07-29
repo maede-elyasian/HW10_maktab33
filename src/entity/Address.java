@@ -21,6 +21,13 @@ public class Address {
     @Column(name = "postal_code")
     private String postalCode;
 
+    public Address(){}
+
+    public Address(String city, String postalCode) {
+        this.city = city;
+        this.postalCode = postalCode;
+    }
+
     public int getId() {
         return id;
     }

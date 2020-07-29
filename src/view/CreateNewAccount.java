@@ -2,16 +2,16 @@ package view;
 
 import dao.AddressDao;
 import dao.UserDao;
-import dao.getIdByTable;
 import entity.Address;
 import entity.User;
-
-import java.sql.SQLException;
+import utility.GetIdByTable;
 import java.util.Scanner;
+
 
 public class CreateNewAccount {
     private static User user = new User();
     private static Address address = new Address();
+
 
     public static User createNewAccount(){
         Scanner in = new Scanner(System.in);
@@ -74,7 +74,7 @@ public class CreateNewAccount {
     }
 
     public static User getUser() {
-        getIdByTable getIdByTable = new getIdByTable();
+        GetIdByTable getIdByTable = new GetIdByTable();
         user.setId(getIdByTable.getId("users"));
         return user;
     }
